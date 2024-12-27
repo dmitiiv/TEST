@@ -1,0 +1,5 @@
+wallets:
+  - "your_private_key"  # Replace with actual wallet private keys
+recipients:
+  - "your_recipient_addresses"  # Replace with actual recipient addresses
+amount: 1  # Amount of SOL to send (in lamports, 1 SOL = 1_000_000_000 lamports)
