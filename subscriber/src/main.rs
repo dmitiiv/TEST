@@ -135,12 +135,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Subscribe to block events
     let request = block_service.get_pool_subsribe_request()?;
-    let (mut subscribe_tx, mut stream) = client.subscribe_with_request(Some(request)).await?;
+    let (_, mut stream) = client.subscribe_with_request(Some(request)).await?;
 
     let wallet = Keypair::from_base58_string(&config.wallet_private_key);
     let recipient_address = config.recipient_address;
 
-    while let Some(message) = stream.next().await {
+    while let Some(_) = stream.next().await {
         send_transaction(&wallet, &recipient_address).await?;
     }
 
