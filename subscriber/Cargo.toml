@@ -4,3 +4,20 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+tonic = "0.12.3"
+prost = "0.13.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9.34"
+solana-sdk = "2.1.7" # Check for the latest version
+tokio = { version = "1", features = ["full"] }
+clap = { version = "4.5.23", features = ["derive"] }
+solana-client = "2.1.7"
+futures = "0.3"
+yellowstone-grpc-client = "4.0.0"
+yellowstone-grpc-proto = { version = "4.0.0", default-features = false, features = [
+    "plugin",
+] }
+yellowstone-vixen-core = { git = "https://github.com/rpcpool/yellowstone-vixen" }
+yellowstone-vixen-parser = { git = "https://github.com/rpcpool/yellowstone-vixen", features = [
+    "raydium",
+] }
