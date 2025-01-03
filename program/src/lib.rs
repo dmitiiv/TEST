@@ -97,11 +97,8 @@ mod tests {
     #[tokio::test]
     async fn test_deposit() {
         let program_id = Pubkey::new_unique();
-        let mut program_test = ProgramTest::new(
-            "your_program_name",
-            program_id,
-            processor!(process_instruction),
-        );
+        let mut program_test =
+            ProgramTest::new("program_name", program_id, processor!(process_instruction));
 
         // Create an account to hold the data
         let user_account = Keypair::new();
