@@ -27,10 +27,36 @@ pub fn process_instruction(
         return Err(ProgramError::InvalidAccountData);
     }
 
+    // Ensure the account is owned by the program
+    if *account.owner != *program_id {
+        return Err(ProgramError::IncorrectProgramId);
+    }
+
     // Deserialize the instruction data
     let instruction: CommandInstruction =
         deserialize(instruction_data).map_err(|_| ProgramError::InvalidAccountData)?;
 
+    // Validate the instruction parameters
+    match instruction.command {
+        Command::Deposit { amount } => {
+            if amount == 0 {
+                return Err(ProgramError::InvalidInstructionData); // Invalid amount for deposit
+            }
+        }
+        Command::Withdraw { amount } => {
+            if amount == 0 {
+                return Err(ProgramError::InvalidInstructionData); // Invalid amount for withdrawal
+            }
+        }
+        Command::CheckBalance => {
+            // No parameters to validate for CheckBalance
+        }
+    }
+
+    // Ensure the account is owned by the instruction program
+    if *account.owner != instruction.program_id {
+        return Err(ProgramError::IncorrectProgramId);
+    }
     // Read existing data or initialize if empty
     let mut data = if account.data.borrow().len() == 0 {
         Data {
@@ -97,11 +123,8 @@ mod tests {
     #[tokio::test]
     async fn test_deposit() {
         let program_id = Pubkey::new_unique();
-        let mut program_test = ProgramTest::new(
-            "your_program_name",
-            program_id,
-            processor!(process_instruction),
-        );
+        let mut program_test =
+            ProgramTest::new("program_name", program_id, processor!(process_instruction));
 
         // Create an account to hold the data
         let user_account = Keypair::new();
